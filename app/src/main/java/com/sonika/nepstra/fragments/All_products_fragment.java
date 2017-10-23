@@ -43,7 +43,7 @@ public class All_products_fragment extends Fragment
     int flag = 0;
     RecyclerView mRecyclerView;
     List<AllProducts> allProductList = new ArrayList<AllProducts>();
-     AllProductAdapter allProductAdapter;
+     AllProductAdapter allProductAdapter = null;
     MySharedPreference sharedPreference;
     SearchView search;
 
@@ -83,6 +83,7 @@ public class All_products_fragment extends Fragment
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                String text = newText;
                 // TODO Auto-generated method stub
                 allProductAdapter.filterData(newText);
                 // displayList();
