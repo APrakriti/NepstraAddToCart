@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,11 +38,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class All_products_fragment extends Fragment {
+public class All_products_fragment extends Fragment
+        implements SearchView.OnQueryTextListener,SearchView.OnCloseListener {
     int flag = 0;
     RecyclerView mRecyclerView;
     List<AllProducts> allProductList = new ArrayList<AllProducts>();
+     AllProductAdapter allProductAdapter;
     MySharedPreference sharedPreference;
+    SearchView search;
 
 
     @Nullable
@@ -49,6 +53,42 @@ public class All_products_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_all_products, container, false);
+
+       search= v.findViewById(R.id.search_it);
+        search.setQueryHint("Search");
+
+        //*** setOnQueryTextFocusChangeListener ***
+        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+
+                //  Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
+                //    Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //*** setOnQueryTextListener ***
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // TODO Auto-generated method stub
+                 allProductAdapter.filterData(query);
+                // displayList();
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // TODO Auto-generated method stub
+                allProductAdapter.filterData(newText);
+                // displayList();
+                return false;
+            }
+        });
         sharedPreference = new MySharedPreference(getContext());
         setHasOptionsMenu(true);
         perform(v);
@@ -58,6 +98,29 @@ public class All_products_fragment extends Fragment {
     private void perform(View v) {
         new AllProductsAsyncTask().execute();
     }
+
+   @Override
+    public boolean onClose() {
+        allProductAdapter.filterData("");
+        // expandAll();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        allProductAdapter.filterData(query);
+        //displayList();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String newText) {
+        allProductAdapter.filterData(newText);
+        // displayList();
+        return false;
+    }
+
+
 
     class AllProductsAsyncTask extends AsyncTask<String, String, String> {
         ProgressDialog mprogressDialog;
