@@ -1,12 +1,15 @@
 package com.sonika.nepstra;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
+import android.widget.SearchView;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +24,7 @@ import android.widget.ImageView;
 
 import com.roughike.bottombar.BottomBar;
 import com.sonika.nepstra.Navigations.Womens;
+import com.sonika.nepstra.adapters.AllProductAdapter;
 import com.sonika.nepstra.helpers.MySharedPreference;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -30,10 +34,12 @@ import static java.security.AccessController.getContext;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     CarouselView carouselview;
+    AllProductAdapter allProductAdapter;
     MySharedPreference sharedPreference;
     ArrayAdapter<CharSequence> adapter;
     BottomBar bottomBar;
     ViewPager viewPager;
+    SearchView search;
     int[] images = {R.drawable.nepstrab, R.drawable.nepstraa, R.drawable.nepstrac};
 
     @Override
@@ -43,12 +49,54 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+     /*   search=(android.widget.SearchView) findViewById(R.id.search_it);
+        search.setQueryHint("Search");
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        //*** setOnQueryTextFocusChangeListener ***
+        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+
+                //  Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
+                //    Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //*** setOnQueryTextListener ***
+      /*  search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // TODO Auto-generated method stub
+              // allProductAdapter.filterData(query);
+                // displayList();
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // TODO Auto-generated method stub
+                String text = newText;
+               allProductAdapter.filterData(newText);
+               // displayList();
+                return false;
+            }
+        });*/
+
+
+
+
+
+
+
+       DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout1);
+       ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+               this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    drawer.setDrawerListener(toggle);
+     toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
@@ -58,6 +106,8 @@ public class MainActivity extends AppCompatActivity
         carouselview.setPageCount(images.length);
         carouselview.setImageListener(imagelistener);
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -69,44 +119,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        MenuItem menuItem = menu.findItem(R.id.action_shop);
-//        int mCount = sharedPreference.retrieveProductCount();
-//        menu.clear();
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        final int id = item.getItemId();
-//
-//        if (id == R.id.action_shop)
-//        {
-//            Intent checkoutIntent = new Intent(getContext(), OrderedProducts.class);
-//            startActivity(checkoutIntent);
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
-
-
-
-//        @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//            //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//            return super.onOptionsItemSelected(item);
-//    }
-
-//    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -154,16 +167,36 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+        return super.onCreateOptionsMenu(menu);
 
-        MenuItem search = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
-        return true;
+
     }
+
     ImageListener imagelistener = new ImageListener() {
         @Override
         public void setImageForPosition(int position, ImageView imageView) {
             imageView.setImageResource(images[position]);
         }
     };
+  /*  @Override
+    public boolean onClose() {
+       allProductAdapter.filterData("");
+        // expandAll();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        allProductAdapter.filterData(query);
+        //displayList();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String newText) {
+        allProductAdapter.filterData(newText);
+        // displayList();
+        return false;
+    }*/
+
 }
