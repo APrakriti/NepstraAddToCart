@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.sonika.nepstra.OrderedProducts;
 import com.sonika.nepstra.R;
 import com.sonika.nepstra.adapters.AllProductAdapter;
+
 import com.sonika.nepstra.helpers.MySharedPreference;
 import com.sonika.nepstra.parser.JsonParserA;
 import com.sonika.nepstra.pojo.AllProducts;
@@ -42,10 +43,13 @@ public class All_products_fragment extends Fragment
         implements SearchView.OnQueryTextListener,SearchView.OnCloseListener {
     int flag = 0;
     RecyclerView mRecyclerView;
+   // final Alladapter alladapter;
     List<AllProducts> allProductList = new ArrayList<AllProducts>();
+    ArrayList<AllProducts> arraylist = new ArrayList<AllProducts>();
      AllProductAdapter allProductAdapter = null;
     MySharedPreference sharedPreference;
     SearchView search;
+
 
 
     @Nullable
@@ -53,7 +57,8 @@ public class All_products_fragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_all_products, container, false);
-
+//       final Alladapter  alladapter = new Alladapter();
+        final AllProductAdapter allProductAdapter = new AllProductAdapter(getContext(), allProductList , arraylist );
        search= v.findViewById(R.id.search_it);
         search.setQueryHint("Search");
 
@@ -75,19 +80,23 @@ public class All_products_fragment extends Fragment
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // TODO Auto-generated method stub
-                 allProductAdapter.filterData(query);
+              //  alladapter.filter(query);
+            //    allProductAdapter.filterData(query);
                 // displayList();
                 return false;
 
             }
-
+            @Nullable
             @Override
             public boolean onQueryTextChange(String newText) {
-                String text = newText;
+              //  String text = newText;
                 // TODO Auto-generated method stub
+             //   alladapter.filter(newText);
                 allProductAdapter.filterData(newText);
                 // displayList();
+               // allProductAdapter.getFilter().filter(newText);
                 return false;
+
             }
         });
         sharedPreference = new MySharedPreference(getContext());
@@ -110,13 +119,15 @@ public class All_products_fragment extends Fragment
     @Override
     public boolean onQueryTextChange(String query) {
         allProductAdapter.filterData(query);
+       // alladapter.filter(query);
         //displayList();
         return false;
     }
 
     @Override
     public boolean onQueryTextSubmit(String newText) {
-        allProductAdapter.filterData(newText);
+      //  alladapter.filter(newText);
+       allProductAdapter.filterData(newText);
         // displayList();
         return false;
     }
@@ -339,7 +350,7 @@ public class All_products_fragment extends Fragment
 
                 Log.e("rrrrrrrrrrrrr", String.valueOf(allProductList.size()));
 
-                AllProductAdapter HelloAdapter = new AllProductAdapter(getContext(), allProductList);
+                AllProductAdapter HelloAdapter = new AllProductAdapter(getContext(), allProductList,arraylist );
                 mRecyclerView.setAdapter(HelloAdapter);
 
 

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -32,8 +34,10 @@ import java.util.Locale;
  * Created by sonika on 9/19/2017.
  */
 
-public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder> {
+public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
+ //   final  List mStringFilterList = null;
     public Context context;
+  //  ValueFilter valueFilter;
     private List<AllProducts> allProductList = null;
    // private List<AllProducts> allNamesList = null;
     ArrayList<AllProducts> arraylist;
@@ -48,13 +52,14 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder> {
     OrderHelper dbHelper;
     NewArrivalHelper newArrivalHelper;
 
-
-    public AllProductAdapter(Context context, List<AllProducts> allProductList) {
+    public AllProductAdapter(Context context, List<AllProducts> allProductList, ArrayList<AllProducts> arraylist) {
         this.context = context;
         this.allProductList = allProductList;
-
+        this.arraylist = arraylist;
     }
-    /* public AllProductAdapter(Context context, List<AllProducts> allproductList) {
+
+
+  /* public AllProductAdapter(Context context, List<AllProducts> allproductList) {
         this.context = context;
         this.allProductList = allproductList;*/
 
@@ -63,6 +68,7 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder> {
     public AllProductHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate
                 (R.layout.all_productlist, parent, false);
+        AllProductAdapter allProductAdapter = new AllProductAdapter(context, allProductList, arraylist);
         dbHelper = new OrderHelper(context);
         womenHelper = new WomenHelper(context);
         newArrivalHelper = new NewArrivalHelper(context);
@@ -147,7 +153,7 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder> {
     }
 
 
-    public void filterData(String charText){
+   public void filterData(String charText){
         charText = charText.toLowerCase(Locale.getDefault());
         allProductList.clear();
         if (charText.length() == 0) {
@@ -160,14 +166,55 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder> {
             }
         }
         notifyDataSetChanged();
-    }
+    }}
 
-}
-
-
-
-
-
-
-
-
+//    @Override
+//    public Filter getFilter()
+//    {
+//        if (valueFilter == null) {
+//            valueFilter = new ValueFilter();
+//        }
+//
+//
+//        return valueFilter;
+//    }
+//
+//
+//private class ValueFilter extends Filter {
+//    @Override
+//    protected FilterResults performFiltering(CharSequence constraint) {
+//        FilterResults results = new FilterResults();
+//
+//        if (constraint != null && constraint.length() > 0) {
+//            List filterList = new ArrayList();
+//            for (int i = 0; i < arraylist.size(); i++) {
+//                if ((arraylist.getNam.toString()).contains(constraint.toString().toUpperCase())) {
+//                    filterList.add(arraylist.get(i));
+//                }
+//            }
+//            results.count = filterList.size();
+//            results.values = filterList;
+//        } else {
+//            results.count = arraylist.size();
+//            results.values = arraylist;
+//        }
+//        return results;
+//
+//    }
+//
+//    @Override
+//    protected void publishResults(CharSequence constraint,
+//                                  FilterResults results) {
+//        allProductList = (List) results.values;
+//        notifyDataSetChanged();
+//    }
+//
+//}}
+//
+//
+//
+//
+//
+//
+//
+//
