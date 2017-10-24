@@ -11,6 +11,16 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="@string/no_data_available"
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
         <SearchView android:id="@+id/search_it"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -35,12 +35,13 @@ import java.util.Locale;
  */
 
 public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
- //   final  List mStringFilterList = null;
+    //   final  List mStringFilterList = null;
     public Context context;
-  //  ValueFilter valueFilter;
+    //  ValueFilter valueFilter;
     private List<AllProducts> allProductList = null;
-   // private List<AllProducts> allNamesList = null;
-    ArrayList<AllProducts> arraylist;
+    // private List<AllProducts> allNamesList = null;
+    //List<AllProducts> savedList;
+    private ArrayList<AllProducts> savedlist;
     MySharedPreference sharedPreference;
     Gson gson;
     private int cartProductNumber = 0;
@@ -52,28 +53,33 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
     OrderHelper dbHelper;
     NewArrivalHelper newArrivalHelper;
 
-    public AllProductAdapter(Context context, List<AllProducts> allProductList, ArrayList<AllProducts> arraylist) {
+    public AllProductAdapter(Context context, List<AllProducts> allProductList, ArrayList<AllProducts> savedlist) {
         this.context = context;
         this.allProductList = allProductList;
-        this.arraylist = arraylist;
+        this.savedlist = savedlist;
     }
 
-
-  /* public AllProductAdapter(Context context, List<AllProducts> allproductList) {
+    /*  public AllProductAdapter(Context context, List<AllProducts> allProductList, List<AllProducts> savedList) {
         this.context = context;
-        this.allProductList = allproductList;*/
+        this.allProductList = allProductList;
+        this.savedList = savedList;
+        Log.e("LIst",savedList.size()+""+allProductList.size()+"Wtf");
+    }*/
+
+
+
 
 
     @Override
     public AllProductHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate
                 (R.layout.all_productlist, parent, false);
-        AllProductAdapter allProductAdapter = new AllProductAdapter(context, allProductList, arraylist);
         dbHelper = new OrderHelper(context);
         womenHelper = new WomenHelper(context);
         newArrivalHelper = new NewArrivalHelper(context);
         searchHelper = new SearchHelper(context);
         return new AllProductHolder(view);
+
     }
 
     @Override
@@ -81,9 +87,6 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
         allholder.allproductName.setText(allProductList.get(position).getName());
         allholder.allproductPrice.setText("$" +allProductList.get(position).getPrice());
         Picasso.with(context).load(allProductList.get(position).getI_src()).into(allholder.allproductImage);
-
-        Log.e("chankhey", "monkey");
-
 
         allholder.viewMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,10 +111,7 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
                 contentValues.put("name" , oname);
                 contentValues.put("price" , oprice);
                 contentValues.put("imageone" , oimage);
-//                Log.e("pizza", "lovet");
-//                Log.e("momo", oname);
-//                Log.e("burger", oprice);
-//                Log.e("oooo", oimage);
+
                 dbHelper.insertOrderInfo(contentValues);
             }
         });
@@ -148,73 +148,23 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
 
     @Override
     public int getItemCount() {
-        //Log.e("sanjeev", String.valueOf(allProductList.size()));
         return allProductList.size();
     }
-
-
-   public void filterData(String charText){
+    public void filterData(String charText){
         charText = charText.toLowerCase(Locale.getDefault());
         allProductList.clear();
+        Log.e("LIst",savedlist.size()+""+charText);
         if (charText.length() == 0) {
-           allProductList.addAll(arraylist);
+            allProductList.addAll(savedlist);
         } else {
-            for (AllProducts wp : arraylist) {
+            for (AllProducts wp : savedlist) {
                 if (wp.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     allProductList.add(wp);
                 }
             }
         }
+        Log.e("LIst",savedlist.size()+""+charText);
         notifyDataSetChanged();
     }}
 
-//    @Override
-//    public Filter getFilter()
-//    {
-//        if (valueFilter == null) {
-//            valueFilter = new ValueFilter();
-//        }
-//
-//
-//        return valueFilter;
-//    }
-//
-//
-//private class ValueFilter extends Filter {
-//    @Override
-//    protected FilterResults performFiltering(CharSequence constraint) {
-//        FilterResults results = new FilterResults();
-//
-//        if (constraint != null && constraint.length() > 0) {
-//            List filterList = new ArrayList();
-//            for (int i = 0; i < arraylist.size(); i++) {
-//                if ((arraylist.getNam.toString()).contains(constraint.toString().toUpperCase())) {
-//                    filterList.add(arraylist.get(i));
-//                }
-//            }
-//            results.count = filterList.size();
-//            results.values = filterList;
-//        } else {
-//            results.count = arraylist.size();
-//            results.values = arraylist;
-//        }
-//        return results;
-//
-//    }
-//
-//    @Override
-//    protected void publishResults(CharSequence constraint,
-//                                  FilterResults results) {
-//        allProductList = (List) results.values;
-//        notifyDataSetChanged();
-//    }
-//
-//}}
-//
-//
-//
-//
-//
-//
-//
-//
+

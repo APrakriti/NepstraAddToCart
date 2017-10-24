@@ -49,50 +49,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-     /*   search=(android.widget.SearchView) findViewById(R.id.search_it);
-        search.setQueryHint("Search");
-
-        //*** setOnQueryTextFocusChangeListener ***
-        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // TODO Auto-generated method stub
-
-                //  Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
-                //    Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //*** setOnQueryTextListener ***
-      /*  search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // TODO Auto-generated method stub
-              // allProductAdapter.filterData(query);
-                // displayList();
-                return false;
-
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // TODO Auto-generated method stub
-                String text = newText;
-               allProductAdapter.filterData(newText);
-               // displayList();
-                return false;
-            }
-        });*/
-
-
-
-
-
-
-
-       DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout1);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     drawer.setDrawerListener(toggle);
