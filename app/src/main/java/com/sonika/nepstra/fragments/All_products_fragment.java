@@ -46,12 +46,10 @@ public class All_products_fragment extends Fragment
     RecyclerView mRecyclerView;
     // final Alladapter alladapter;
     List<AllProducts> allProductList = new ArrayList<AllProducts>();
-    ArrayList<AllProducts> arraylist = new ArrayList<AllProducts>();
     AllProductAdapter allProductAdapter = null;
     MySharedPreference sharedPreference;
     SearchView search;
-    ArrayList<AllProducts>savedlist = new ArrayList<>();
-    // List<AllProducts> savedList=new ArrayList<>();
+    List<AllProducts> savedList=new ArrayList<>();
 
 
 
@@ -61,50 +59,51 @@ public class All_products_fragment extends Fragment
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_all_products, container, false);
 //       final Alladapter  alladapter = new Alladapter();
-        allProductAdapter = new AllProductAdapter(getContext(), allProductList , savedlist);
+        allProductAdapter = new AllProductAdapter(getContext(), allProductList );
         search= v.findViewById(R.id.search_it);
         search.setQueryHint("Search");
 
         sharedPreference = new MySharedPreference(getContext());
         setHasOptionsMenu(true);
         search.setOnQueryTextListener(this);
-
         search.setOnCloseListener(this);
-
-        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                // TODO Auto-generated method stub
-
-                //  Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
-                //    Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //*** setOnQueryTextListener ***
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // TODO Auto-generated method stub
-                allProductAdapter.filterData(query);
-                // displayList();
-                return false;
-
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // TODO Auto-generated method stub
-
-                allProductAdapter.filterData(newText);
-
-                // displayList();
-                return false;
-            }
-        });
-
+//        //*** setOnQueryTextFocusChangeListener ***
+//        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+//
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                // TODO Auto-generated method stub
+//
+//                //  Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
+//                //    Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        //*** setOnQueryTextListener ***
+//        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                // TODO Auto-generated method stub
+//                //  alladapter.filter(query);
+//                //    allProductAdapter.filterData(query);
+//                // displayList();
+//                return false;
+//
+//            }
+//            @Nullable
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                //  String text = newText;
+//                // TODO Auto-generated method stub
+//                //   alladapter.filter(newText);
+//                allProductAdapter.filterData(newText);
+//                // displayList();
+//                // allProductAdapter.getFilter().filter(newText);
+//                return false;
+//
+//            }
+//        });
         perform(v);
         return v;
     }
@@ -115,15 +114,14 @@ public class All_products_fragment extends Fragment
 
     @Override
     public boolean onClose() {
-       allProductAdapter.filterData("");
+        filterData("");
         // expandAll();
         return false;
     }
 
-
     @Override
     public boolean onQueryTextChange(String query) {
-       allProductAdapter.filterData(query);
+        filterData(query);
         // alladapter.filter(query);
         //displayList();
         return false;
@@ -132,28 +130,27 @@ public class All_products_fragment extends Fragment
     @Override
     public boolean onQueryTextSubmit(String newText) {
         //  alladapter.filter(newText);
-        allProductAdapter.filterData(newText);
-
+        filterData(newText);
         // displayList();
         return false;
     }
-  /*  public void filterData(String charText){
+    public void filterData(String charText){
         charText = charText.toLowerCase(Locale.getDefault());
         allProductList.clear();
-        Log.e("LIst",savedlist.size()+""+charText);
+
         if (charText.length() == 0) {
-            allProductList.addAll(savedlist);
+            allProductList.addAll(savedList);
         } else {
-            for (AllProducts wp : savedlist) {
+            for (AllProducts wp : savedList) {
                 if (wp.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     allProductList.add(wp);
+
+                    Log.e("LIst",wp.getName()+""+charText+allProductList.size()+allProductList.get(0).getName());
                 }
             }
         }
-
-        Log.e("LIst",savedlist.size()+""+charText);
         allProductAdapter.notifyDataSetChanged();
-    }*/
+    }
 
 
 
@@ -342,7 +339,7 @@ public class All_products_fragment extends Fragment
                             AllProducts allProducts =
                                     new AllProducts(id,total_sales,download_limit,download_expiry, shipping_class_id,rating_count, parent_id,c_id,i_id,i_position,menu_order,m_id,tag_id,m_key,m_value,price,name,slug,permalink,date_created,date_created_gmt,date_modified,date_modified_gmt,type,status,weight,catalog_visibility,description,short_description,sku,regular_price,sale_price,price_html,external_url,button_text,tag_id,tax_status,tax_class,backorders,length,width,height,shipping_class,purchase_note,average_rating,c_name,c_slug,i_date_created,i_date_created_gmt,i_date_modified,i_date_modified_gmt,i_src,i_name,i_alt,self_href,collection_href,tag_name,tag_slug,downloads,related_ids,upsell_ids,cross_sell_ids,tags,attributes,default_attributes,variations,grouped_products,featured,date_on_sale_from,date_on_sale_from_gmt,date_on_sale_to,date_on_sale_to_gmt,on_sale,purchasable,virtual,downloadable,manage_stock,stock_quantity,in_stock,backorders_allowed,backordered,sold_individually,shipping_required,shipping_taxable,reviews_allowed);
                             allProductList.add(allProducts);
-                            savedlist.add(allProducts);
+                            savedList.add(allProducts);
                             flag = 2;
                         }
 
@@ -367,7 +364,6 @@ public class All_products_fragment extends Fragment
             } else if (flag == 2) {
                 Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
                 mRecyclerView = getView().findViewById(R.id.recycler_view2);
-
                 GridLayoutManager mGrid = new GridLayoutManager(getContext(), 2);
                 mRecyclerView.setLayoutManager(mGrid);
                 mRecyclerView.setHasFixedSize(true);
@@ -375,15 +371,13 @@ public class All_products_fragment extends Fragment
 
                 Log.e("rrrrrrrrrrrrr", String.valueOf(allProductList.size()));
 
-                AllProductAdapter HelloAdapter = new AllProductAdapter(getContext(), allProductList,savedlist );
-                mRecyclerView.setAdapter(HelloAdapter);
+                allProductAdapter = new AllProductAdapter(getContext(), allProductList);
+                mRecyclerView.setAdapter(allProductAdapter);
 
 
             } else {
                 Toast.makeText(getContext(), "Invalid credentials", Toast.LENGTH_SHORT).show();
             }
-
-
         }
     }
 

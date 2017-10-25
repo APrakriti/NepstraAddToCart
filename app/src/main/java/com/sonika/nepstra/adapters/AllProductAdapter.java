@@ -34,40 +34,28 @@ import java.util.Locale;
  * Created by sonika on 9/19/2017.
  */
 
-public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
+public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder> {
     //   final  List mStringFilterList = null;
     public Context context;
     //  ValueFilter valueFilter;
     private List<AllProducts> allProductList = null;
     // private List<AllProducts> allNamesList = null;
-    //List<AllProducts> savedList;
-    private ArrayList<AllProducts> savedlist;
+    List<AllProducts> savedList;
     MySharedPreference sharedPreference;
     Gson gson;
     private int cartProductNumber = 0;
-    String oname, oprice, oimage;
-    Integer c_id;
+    private String oname, oprice, oimage;
+    private Integer c_id;
     CategoriesHelper categoriesHelper;
-    WomenHelper womenHelper;
-    SearchHelper searchHelper;
-    OrderHelper dbHelper;
-    NewArrivalHelper newArrivalHelper;
+    private WomenHelper womenHelper;
+    private SearchHelper searchHelper;
+    private OrderHelper dbHelper;
+    private NewArrivalHelper newArrivalHelper;
 
-    public AllProductAdapter(Context context, List<AllProducts> allProductList, ArrayList<AllProducts> savedlist) {
+    public AllProductAdapter(Context context, List<AllProducts> allProductList) {
         this.context = context;
         this.allProductList = allProductList;
-        this.savedlist = savedlist;
     }
-
-    /*  public AllProductAdapter(Context context, List<AllProducts> allProductList, List<AllProducts> savedList) {
-        this.context = context;
-        this.allProductList = allProductList;
-        this.savedList = savedList;
-        Log.e("LIst",savedList.size()+""+allProductList.size()+"Wtf");
-    }*/
-
-
-
 
 
     @Override
@@ -79,20 +67,18 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
         newArrivalHelper = new NewArrivalHelper(context);
         searchHelper = new SearchHelper(context);
         return new AllProductHolder(view);
-
-
     }
 
     @Override
-    public void onBindViewHolder(AllProductHolder allholder, final int position) {
+    public void onBindViewHolder(final AllProductHolder allholder, int position) {
         allholder.allproductName.setText(allProductList.get(position).getName());
-        allholder.allproductPrice.setText("$" +allProductList.get(position).getPrice());
+        allholder.allproductPrice.setText("$" + allProductList.get(position).getPrice());
         Picasso.with(context).load(allProductList.get(position).getI_src()).into(allholder.allproductImage);
 
         allholder.viewMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AllProducts intentprod = allProductList.get(position);
+                AllProducts intentprod = allProductList.get(allholder.getAdapterPosition());
                 Intent intent = new Intent(context, DetailsActivity.class);
                 intent.putExtra("hello", intentprod);
                 context.startActivity(intent);
@@ -104,15 +90,14 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
             public void onClick(View view) {
                 Toast.makeText(context, "Added to cart", Toast.LENGTH_SHORT).show();
 
-                oname = allProductList.get(position).getName();
-                oprice = allProductList.get(position).getPrice();
-                oimage = allProductList.get(position).getI_src();
+                oname = allProductList.get(allholder.getAdapterPosition()).getName();
+                oprice = allProductList.get(allholder.getAdapterPosition()).getPrice();
+                oimage = allProductList.get(allholder.getAdapterPosition()).getI_src();
 
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("name" , oname);
-                contentValues.put("price" , oprice);
-                contentValues.put("imageone" , oimage);
-
+                contentValues.put("name", oname);
+                contentValues.put("price", oprice);
+                contentValues.put("imageone", oimage);
                 dbHelper.insertOrderInfo(contentValues);
             }
         });
@@ -127,7 +112,7 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
         contentValues1.put("imageone", oimage);
         searchHelper.insertsearch(contentValues1);
 
-        if (c_id==29){
+        if (c_id == 29) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("c_id", c_id);
             contentValues.put("name", oname);
@@ -135,20 +120,6 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
             contentValues.put("imageone", oimage);
             womenHelper.insertwomen(contentValues);
         }
-//        oname = allProductList.get(position).getName();
-//        oprice = allProductList.get(position).getPrice();
-//        oimage = allProductList.get(position).getI_src();
-//
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("name" , oname);
-//        contentValues.put("price" , oprice);
-//        contentValues.put("imageone" , oimage);
-//        searchHelper.insertsearch(contentValues);
-    }
-
-    public void updateList(List<AllProducts> list){
-        allProductList = list;
-        notifyDataSetChanged();
     }
 
 
@@ -156,22 +127,4 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
     public int getItemCount() {
         return allProductList.size();
     }
-    public void filterData(String charText){
-        charText = charText.toLowerCase(Locale.getDefault());
-        allProductList.clear();
-        Log.e("LIst",savedlist.size()+""+charText);
-        if (charText.length() == 0) {
-            allProductList.addAll(savedlist);
-        } else {
-            for (AllProducts wp : savedlist) {
-                if (wp.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    allProductList.add(wp);
-                }
-            }
-        }
-        Log.e("LIst",savedlist.size()+""+charText);
-        notifyDataSetChanged();
-        updateList(allProductList);
-    }}
-
-
+}
