@@ -80,6 +80,7 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
         searchHelper = new SearchHelper(context);
         return new AllProductHolder(view);
 
+
     }
 
     @Override
@@ -145,6 +146,11 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
 //        searchHelper.insertsearch(contentValues);
     }
 
+    public void updateList(List<AllProducts> list){
+        allProductList = list;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {
@@ -165,6 +171,7 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductHolder>  {
         }
         Log.e("LIst",savedlist.size()+""+charText);
         notifyDataSetChanged();
+        updateList(allProductList);
     }}
 
 

@@ -71,6 +71,40 @@ public class All_products_fragment extends Fragment
 
         search.setOnCloseListener(this);
 
+        search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                // TODO Auto-generated method stub
+
+                //  Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
+                //    Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //*** setOnQueryTextListener ***
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // TODO Auto-generated method stub
+                allProductAdapter.filterData(query);
+                // displayList();
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // TODO Auto-generated method stub
+
+                allProductAdapter.filterData(newText);
+
+                // displayList();
+                return false;
+            }
+        });
+
         perform(v);
         return v;
     }
