@@ -53,10 +53,10 @@ public class OrderedProducts extends AppCompatActivity implements ListViewListen
             @Override
             public void onClick(View view) {
               Intent i = new Intent(OrderedProducts.this, PaypalActivity.class);
-          //    i.putExtra("TOTAL_PRICE", mSubTotal);
+               i.putExtra("TOTAL_PRICE", mSubTotal);
                startActivity(i);
-                subtotal = totalAmount.getText().toString();
-                execute();
+            //   subtotal = totalAmount.getText().toString();
+             //   execute();
 
             }
         });
@@ -81,16 +81,16 @@ public class OrderedProducts extends AppCompatActivity implements ListViewListen
         return totalCost;
     }
 
-
-   private  double execute(){
-
-       SharedPreferences sharedPreferences = getSharedPreferences("Reg", MODE_PRIVATE);
-       SharedPreferences.Editor editor= sharedPreferences.edit();
-       editor.putString("Total", subtotal);
-       editor.commit();
-
-    return 0;
-   }
+//
+//   private  double execute(){
+//
+//       SharedPreferences sharedPreferences = getSharedPreferences("Reg", MODE_PRIVATE);
+//       SharedPreferences.Editor editor= sharedPreferences.edit();
+//       editor.putString("Total", subtotal);
+//       editor.commit();
+//
+//    return 0;
+//   }
 
 
 }

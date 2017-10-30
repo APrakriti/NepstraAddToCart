@@ -51,16 +51,25 @@ public class PaypalActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paypal);
-//        totalCostPrice = getIntent().getExtras().getDouble("TOTAL_PRICE");
-//        Log.d(TAG, "Price " + totalCostPrice);
-//
+     totalCostPrice = getIntent().getExtras().getDouble("TOTAL_PRICE");
+     Log.d(TAG, "Price Prakriti " + totalCostPrice);
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        startService(intent);
+////
 
 
         buttonPay = (Button) findViewById(R.id.buttonPay);
         buttonPay.setOnClickListener(this);
-        Intent intent = new Intent(this, PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
-        startService(intent);
+        assert buttonPay != null;
+        buttonPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initialization();
+
+            }
+        });
+
     }
 
     @Override
@@ -114,16 +123,18 @@ public class PaypalActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        SharedPreferences sharedPreferences = getSharedPreferences("Reg", MODE_PRIVATE);
-        SharedPreferences.Editor editor= sharedPreferences.edit();
-        totalamt = sharedPreferences.getString("Total", null);
-        Log.e(TAG, "Totall kjhvsdjhvdjkvhdfs" + totalamt);
-        editor.commit();
-        //Creating a paypalpayment
-       PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(totalamt)), "USD", "Total Cost",
+
+    private void initialization(){
+//
+       PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(totalCostPrice)), "USD", "Total Cost",
                 PayPalPayment.PAYMENT_INTENT_SALE);
+//        SharedPreferences sharedPreferences = getSharedPreferences("Reg", MODE_PRIVATE);
+//        SharedPreferences.Editor editor= sharedPreferences.edit();
+//        totalamt = sharedPreferences.getString("Total", null);
+//        Log.e(TAG, "Totall kjhvsdjhvdjkvhdfs" + totalamt);
+//        editor.commit();
+        //Creating a paypalpayment
+
 
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -132,6 +143,11 @@ public class PaypalActivity extends AppCompatActivity implements View.OnClickLis
         //Starting the intent activity for result
         //the request code will be used on the method onActivityResult
         startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 //    private void initializePayPalPayment(){
 //        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(totalamt)), "USD", "Total Cost", PayPalPayment.PAYMENT_INTENT_SALE);
