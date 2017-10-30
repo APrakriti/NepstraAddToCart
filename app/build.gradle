@@ -37,6 +37,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.synnapps:carouselview:0.1.4'
     compile 'com.google.code.gson:gson:2.6.1'
+    compile 'com.paypal.sdk:paypal-android-sdk:2.14.5'
     compile 'com.google.android.gms:play-services-wallet:9.4.0'
     testCompile 'junit:junit:4.12'
+
 }

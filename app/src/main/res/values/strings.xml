@@ -30,4 +30,5 @@
     <string name="app_label">Search</string>
     <string name="search_hint">Search</string>
     <string name="no_data_available">No result found</string>
+    <string name="pay_with_paypal">Pay with PayPal</string>
 </resources>

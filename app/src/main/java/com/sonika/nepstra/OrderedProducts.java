@@ -1,8 +1,11 @@
 package com.sonika.nepstra;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +24,7 @@ import java.util.List;
  */
 
 public class OrderedProducts extends AppCompatActivity implements ListViewListener {
+    Button checkout;
     //RecyclerView orders_recyclerView;
     ListView lv;
     OrderHelper dbhelper;
@@ -32,6 +36,14 @@ public class OrderedProducts extends AppCompatActivity implements ListViewListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ordered_products);
+        checkout = (Button) findViewById(R.id.btn_proceed_add_to_cart);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(OrderedProducts.this, PaypalActivity.class);
+                startActivity(i);
+            }
+        });
         dbhelper = new OrderHelper(this);
         lv = (ListView) findViewById(R.id.ordered_productlist);
         totalAmount = (TextView) findViewById(R.id.totalamount);
@@ -58,40 +70,3 @@ public class OrderedProducts extends AppCompatActivity implements ListViewListen
 
     }
 }
-//        orders_recyclerView = (RecyclerView) findViewById(R.id.or);
-//        //Toast.makeText(this, orderedProducts.getOrderedname(), Toast.LENGTH_SHORT).show();
-//
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(OrderedProducts.this);
-//        orders_recyclerView.setLayoutManager(linearLayoutManager);
-//        orders_recyclerView.setHasFixedSize(true);
-//        OrderedProductsAdapter orderAdapter = new OrderedProductsAdapter
-//                (getApplicationContext(), orderedProductsList);
-//        orders_recyclerView.setAdapter(orderAdapter);
-
-
-
-
-      //  Toast.makeText(this, allProducts.getName(), Toast.LENGTH_SHORT).show();
-
-//adding to cart
-
-//        MySharedPreference mShared = new MySharedPreference(OrderedProducts_pojo.this);
-//
-//        GsonBuilder builder = new GsonBuilder();
-//        Gson gson = builder.create();
-//        AllProducts[] addCartProducts = gson.fromJson(mShared.retrieveProductFromCart(), AllProducts[].class);
-//        List<AllProducts> productList = convertObjectArrayToListObject(addCartProducts);
-
-//        OrderedProductsAdapter mAdapter = new OrderedProductsAdapter(getApplicationContext(), productList);
-//        orders_recyclerView.setAdapter(mAdapter);
-//    }
-//
-//    private List<AllProducts> convertObjectArrayToListObject(AllProducts[] allProducts){
-//       // final AllProducts allProductsa = (AllProducts) getIntent().getSerializableExtra("hello");
-//        //List<AllProducts> mProduct = new ArrayList<AllProducts>();
-//        AllProducts mProduct =(AllProducts) getIntent().getSerializableExtra("hello");
-//        allProductList.add(mProduct);
-//        Collections.addAll(allProductList, allProducts);
-//        return allProductList;
-//   }
-//}
