@@ -5,6 +5,6 @@ package com.sonika.nepstra.listener;
  */
 
 public interface ListViewListener {
-        void getMyTotal();
+        double getMyTotal();
     }
 

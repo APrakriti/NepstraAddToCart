@@ -21,8 +21,8 @@
             android:textColor="#000000"
             android:textAlignment="center" />
 
-        <EditText
-            android:id="@+id/editTextAmount"
+        <TextView
+            android:id="@+id/textAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center" />

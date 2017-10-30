@@ -1,6 +1,7 @@
 package com.sonika.nepstra;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -25,30 +26,40 @@ import java.util.List;
 
 public class OrderedProducts extends AppCompatActivity implements ListViewListener {
     Button checkout;
+    String subtotal;
     //RecyclerView orders_recyclerView;
     ListView lv;
     OrderHelper dbhelper;
     OrderAdapter mOrderAdapter;
     List<OrderedProducts_pojo> orderedProductsList = new ArrayList<>();
     TextView totalAmount;
+    private double mSubTotal = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ordered_products);
         checkout = (Button) findViewById(R.id.btn_proceed_add_to_cart);
-        checkout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(OrderedProducts.this, PaypalActivity.class);
-                startActivity(i);
-            }
-        });
+
         dbhelper = new OrderHelper(this);
         lv = (ListView) findViewById(R.id.ordered_productlist);
         totalAmount = (TextView) findViewById(R.id.totalamount);
-        getMyTotal();
+        mSubTotal = getMyTotal();
+
+       // subTotal.setText("Subtotal excluding tax and shipping: " + String.valueOf(mSubTotal) + " $");
+//getPayment();
         show();
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              Intent i = new Intent(OrderedProducts.this, PaypalActivity.class);
+          //    i.putExtra("TOTAL_PRICE", mSubTotal);
+               startActivity(i);
+                subtotal = totalAmount.getText().toString();
+                execute();
+
+            }
+        });
     }
 
     public void show() {
@@ -63,10 +74,23 @@ public class OrderedProducts extends AppCompatActivity implements ListViewListen
     }
 
     @Override
-    public void getMyTotal() {
-
+    public double getMyTotal() {
+        double totalCost = 0;
         String result = dbhelper.GetTotal();
-        totalAmount.setText("Your Toatl Bill Amount Is : " +result);
-
+        totalAmount.setText("Your Total Bill Amount Is : " + result);
+        return totalCost;
     }
+
+
+   private  double execute(){
+
+       SharedPreferences sharedPreferences = getSharedPreferences("Reg", MODE_PRIVATE);
+       SharedPreferences.Editor editor= sharedPreferences.edit();
+       editor.putString("Total", subtotal);
+       editor.commit();
+
+    return 0;
+   }
+
+
 }
