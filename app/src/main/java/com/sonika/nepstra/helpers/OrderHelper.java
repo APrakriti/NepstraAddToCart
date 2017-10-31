@@ -86,7 +86,7 @@ public class OrderHelper extends SQLiteOpenHelper {
         Cursor GetTotal = db.rawQuery("SELECT Sum(price) AS myTotal FROM  user_orders", null);
         String result = " ";
         while (GetTotal.moveToNext()) {
-            result = String.valueOf(GetTotal.getDouble(GetTotal.getColumnIndex("myTotal")));
+            result = String.valueOf(GetTotal.getLong(GetTotal.getColumnIndex("myTotal")));
         }
         return result;
 

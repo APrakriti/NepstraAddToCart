@@ -44,7 +44,8 @@ public class OrderedProducts extends AppCompatActivity implements ListViewListen
         dbhelper = new OrderHelper(this);
         lv = (ListView) findViewById(R.id.ordered_productlist);
         totalAmount = (TextView) findViewById(R.id.totalamount);
-        mSubTotal = getMyTotal();
+        getMyTotal();
+
 
        // subTotal.setText("Subtotal excluding tax and shipping: " + String.valueOf(mSubTotal) + " $");
 //getPayment();
@@ -53,10 +54,10 @@ public class OrderedProducts extends AppCompatActivity implements ListViewListen
             @Override
             public void onClick(View view) {
               Intent i = new Intent(OrderedProducts.this, PaypalActivity.class);
-               i.putExtra("TOTAL_PRICE", mSubTotal);
+            //   i.putExtra("TOTAL_PRICE", mSubTotal);
                startActivity(i);
             //   subtotal = totalAmount.getText().toString();
-             //   execute();
+              ;
 
             }
         });
@@ -73,24 +74,31 @@ public class OrderedProducts extends AppCompatActivity implements ListViewListen
         }
     }
 
-    @Override
-    public double getMyTotal() {
-        double totalCost = 0;
-        String result = dbhelper.GetTotal();
-        totalAmount.setText("Your Total Bill Amount Is : " + result);
-        return totalCost;
-    }
+//    @Override
+//    public double getMyTotal() {
+//        double totalCost = 0;
+//        String result = dbhelper.GetTotal();
+//        totalAmount.setText("Your Total Bill Amount Is : " + result);
+//        return totalCost;
+//
+//    }
+ @Override
+  public void getMyTotal() {
+    String result = dbhelper.GetTotal();
+    totalAmount.setText(result);
+
+    String text = (String) totalAmount.getText();
+
+    SharedPreferences sm = getSharedPreferences("USER_LOGIN", 0);
+    SharedPreferences.Editor editor = sm.edit();
+    editor.putString("total_amount",text);
+    editor.apply();
+    editor.commit();
+
+}
 
 //
-//   private  double execute(){
-//
-//       SharedPreferences sharedPreferences = getSharedPreferences("Reg", MODE_PRIVATE);
-//       SharedPreferences.Editor editor= sharedPreferences.edit();
-//       editor.putString("Total", subtotal);
-//       editor.commit();
-//
-//    return 0;
-//   }
+
 
 
 }
